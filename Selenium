@@ -1,0 +1,45 @@
+###Selenium code block: downloads excel file for report
+
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+
+driver = webdriver.Chrome(r'C:\Users\DSchultheiss\Downloads\chromedriver_win32\chromedriver.exe')
+driver.implicitly_wait(10)
+driver.get('https://cexreports.com/ReportServer/Logon.aspx?ReturnUrl=https://cexreports.com/Reports')
+actions = ActionChains(driver)
+time.sleep(2) 
+
+#Log-in page
+user_box = driver.find_element(By.ID, 'TxtUser')
+user_box.send_keys('*********')
+pass_box = driver.find_element(By.ID, 'TxtPwd')
+pass_box.send_keys('*********')
+pass_box.send_keys(Keys.RETURN)
+
+#Navigating to report. Time.Sleep below is needed for some reason, could likely substitute with an explicity wait using Selenium package. 
+#All other sleeps are so user can see what is happening. 
+time.sleep(2)
+select_box = driver.find_element(By.XPATH, '//*[@id="subnav"]/subnav/nav/div/ul[1]/li[2]/a/span[2]')
+actions.click(select_box).perform()
+select_box = driver.find_element(By.CLASS_NAME, 'name')
+actions.click(select_box).perform()
+select_box = driver.find_element(By.CLASS_NAME, 'name')
+actions.click(select_box).perform()
+select_box = driver.find_element(By.XPATH, '//*[@id="main"]/div/div/section[2]/tiles-view/section/div/div/div/ul/li[1]/folder-tile/rs-tile/a[1]/span[2]/span')
+actions.click(select_box).perform()
+time.sleep(2)
+select_box = driver.find_element(By.XPATH, '//*[@id="main"]/div/div/section[2]/tiles-view/section/div/div/div/ul/li[9]/report-tile/rs-tile/a[1]/span[2]/span')
+actions.click(select_box).perform()
+time.sleep(2)
+
+#Downloads excel file. Javascript interfering with identifying elements in widget bar, must navigate with keystrokes.
+for i in range(6):
+    actions.send_keys(Keys.TAB).perform()
+actions.send_keys(Keys.ENTER).send_keys(Keys.ARROW_DOWN).send_keys(Keys.ENTER).perform()
+ 
+time.sleep(15) 
+
+driver.quit()
