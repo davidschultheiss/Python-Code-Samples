@@ -1,0 +1,17 @@
+#A chunk of code from my daily spreadsheet refreshes. 
+
+import win32com.client as win32
+import time
+Xlsx = win32.DispatchEx('Excel.Application')
+Xlsx.DisplayAlerts = False
+Xlsx.Visible = True
+book = Xlsx.Workbooks.Open(r'C:\Users\DSchultheiss\OneDrive - Premium Retail Services\Desktop\Shortcuts\StoreListLive - Shortcut.lnk', UpdateLinks=0)
+time.sleep(8)
+book.RefreshAll()
+Xlsx.CalculateUntilAsyncQueriesDone()
+book.Save()
+time.sleep(8)
+book.Close()
+Xlsx.Quit()
+del book
+del Xlsx
